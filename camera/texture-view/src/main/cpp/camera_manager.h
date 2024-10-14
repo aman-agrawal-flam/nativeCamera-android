@@ -125,11 +125,6 @@ class NDKCamera {
                        ACameraCaptureFailure* failure);
 
   void StartPreview(bool start);
-  bool TakePhoto(void);
-  bool GetExposureRange(int64_t* min, int64_t* max, int64_t* curVal);
-  bool GetSensitivityRange(int64_t* min, int64_t* max, int64_t* curVal);
-
-  void UpdateCameraRequestParameter(int32_t code, int64_t val);
 };
 
 // helper classes to hold enumerated camera
