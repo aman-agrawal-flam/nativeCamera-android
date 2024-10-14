@@ -105,19 +105,6 @@ Java_com_sample_textureview_ViewActivity_getMinimumCompatiblePreviewSize(
 }
 
 /**
- * getCameraSensorOrientation()
- * @ return camera sensor orientation angle relative to Android device's
- * display orientation. This sample only deal to back facing camera.
- */
-extern "C" JNIEXPORT jint JNICALL
-Java_com_sample_textureview_ViewActivity_getCameraSensorOrientation(
-    JNIEnv *env, jobject instance, jlong ndkCameraObj) {
-  ASSERT(ndkCameraObj, "NativeObject should not be null Pointer");
-  CameraAppEngine *pApp = reinterpret_cast<CameraAppEngine *>(ndkCameraObj);
-  return pApp->GetCameraSensorOrientation(ACAMERA_LENS_FACING_BACK);
-}
-
-/**
  * OnPreviewSurfaceCreated()
  *   Notification to native camera that java TextureView is ready
  *   to preview video. Simply create cameraSession and

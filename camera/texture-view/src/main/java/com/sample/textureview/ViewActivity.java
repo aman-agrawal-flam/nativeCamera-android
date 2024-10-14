@@ -100,11 +100,6 @@ public class ViewActivity extends Activity
     private void createTextureView() {
         textureView_ = (TextureView) findViewById(R.id.texturePreview);
         textureView_.setSurfaceTextureListener(this);
-        if (textureView_.isAvailable()) {
-            onSurfaceTextureAvailable(textureView_.getSurfaceTexture(),
-                    textureView_.getWidth(), textureView_.getHeight());
-                    Log.d(TAG, "TextureView is available: x" + textureView_.getWidth() + "y" + textureView_.getHeight());
-        }
     }
 
     public void onSurfaceTextureAvailable(SurfaceTexture surface,
@@ -129,50 +124,6 @@ public class ViewActivity extends Activity
         }
         textureView_.setLayoutParams(
                 new FrameLayout.LayoutParams(newWidth, newHeight, Gravity.CENTER));
-        configureTransform(newWidth, newHeight);
-    }
-
-    /**
-     * configureTransform()
-     * Courtesy to https://github.com/google/cameraview/blob/master/library/src/main/api14/com/google/android/cameraview/TextureViewPreview.java#L108
-     *
-     * @param width  TextureView width
-     * @param height is TextureView height
-     */
-    void configureTransform(int width, int height) {
-        int mDisplayOrientation = getWindowManager().getDefaultDisplay().getRotation() * 90;
-        Matrix matrix = new Matrix();
-        if (mDisplayOrientation % 180 == 90) {
-            //final int width = getWidth();
-            //final int height = getHeight();
-            // Rotate the camera preview when the screen is landscape.
-            matrix.setPolyToPoly(
-                    new float[]{
-                            0.f, 0.f, // top left
-                            width, 0.f, // top right
-                            0.f, height, // bottom left
-                            width, height, // bottom right
-                    }, 0,
-                    mDisplayOrientation == 90 ?
-                            // Clockwise
-                            new float[]{
-                                    0.f, height, // top left
-                                    0.f, 0.f,    // top right
-                                    width, height, // bottom left
-                                    width, 0.f, // bottom right
-                            } : // mDisplayOrientation == 270
-                            // Counter-clockwise
-                            new float[]{
-                                    width, 0.f, // top left
-                                    width, height, // top right
-                                    0.f, 0.f, // bottom left
-                                    0.f, height, // bottom right
-                            }, 0,
-                    4);
-        } else if (mDisplayOrientation == 180) {
-            matrix.postRotate(180, width / 2, height / 2);
-        }
-        textureView_.setTransform(matrix);
     }
 
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface,

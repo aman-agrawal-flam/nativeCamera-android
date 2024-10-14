@@ -231,8 +231,6 @@ bool NDKCamera::MatchCaptureSizeRequest(int32_t requestWidth,
   }
   LOGI("resView: %dx%d", resView->width, resView->height);
   resView->format = AIMAGE_FORMAT_YUV_420_888;
-  if (resCap){ resCap->format = AIMAGE_FORMAT_JPEG;
-  LOGI("resCap: %dx%d", resCap->width, resCap->height);}
   return foundIt;
 }
 
@@ -264,10 +262,6 @@ void NDKCamera::CreateSession(ANativeWindow* previewWindow,
                                 outputContainer_, GetSessionListener(),
                                 &captureSession_));
 
-  if (jpgWindow) {
-    ACaptureRequest_setEntry_i32(requests_[JPG_CAPTURE_REQUEST_IDX].request_,
-                                 ACAMERA_JPEG_ORIENTATION, 1, &imageRotation);
-  }
 
   if (!manualPreview) {
     return;
@@ -373,37 +367,6 @@ void NDKCamera::EnumerateCamera() {
     activeCameraId_ = cameras_.begin()->second.id_;
   }
   ACameraManager_deleteCameraIdList(cameraIds);
-}
-
-/**
- * GetSensorOrientation()
- *     Retrieve current sensor orientation regarding to the phone device
- * orientation
- *     SensorOrientation is NOT settable.
- */
-bool NDKCamera::GetSensorOrientation(int32_t* facing, int32_t* angle) {
-  if (!cameraMgr_) {
-    return false;
-  }
-
-  ACameraMetadata* metadataObj;
-  ACameraMetadata_const_entry face, orientation;
-  CALL_MGR(getCameraCharacteristics(cameraMgr_, activeCameraId_.c_str(),
-                                    &metadataObj));
-  CALL_METADATA(getConstEntry(metadataObj, ACAMERA_LENS_FACING, &face));
-  cameraFacing_ = static_cast<int32_t>(face.data.u8[0]);
-
-  CALL_METADATA(
-      getConstEntry(metadataObj, ACAMERA_SENSOR_ORIENTATION, &orientation));
-
-  LOGI("====Current SENSOR_ORIENTATION: %8d", orientation.data.i32[0]);
-
-  ACameraMetadata_free(metadataObj);
-  cameraOrientation_ = orientation.data.i32[0];
-
-  if (facing) *facing = cameraFacing_;
-  if (angle) *angle = cameraOrientation_;
-  return true;
 }
 
 /**

@@ -114,13 +114,10 @@ class NDKCamera {
                      bool manaulPreview, int32_t imageRotation);
   void CreateSession(ANativeWindow* previewWindow);
 
-  bool GetSensorOrientation(int32_t* facing, int32_t* angle);
   void OnCameraStatusChanged(const char* id, bool available);
   void OnDeviceState(ACameraDevice* dev);
   void OnDeviceError(ACameraDevice* dev, int err);
   void OnSessionState(ACameraCaptureSession* ses, CaptureSessionState state);
-  void OnCaptureSequenceEnd(ACameraCaptureSession* session, int sequenceId,
-                            int64_t frameNumber);
   void OnCaptureFailed(ACameraCaptureSession* session, ACaptureRequest* request,
                        ACameraCaptureFailure* failure);
 
