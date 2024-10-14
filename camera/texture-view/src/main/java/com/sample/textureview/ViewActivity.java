@@ -46,6 +46,7 @@ public class ViewActivity extends Activity
     private TextureView textureView_;
     Surface surface_ = null;
     private Size cameraPreviewSize_;
+    private static final String TAG = "CameraSample";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,10 +54,12 @@ public class ViewActivity extends Activity
         onWindowFocusChanged(true);
         setContentView(R.layout.activity_main);
         if (isCamera2Device()) {
+            Log.d(TAG, "Camera2 API is supported");
             RequestCamera();
         } else {
             Log.e("CameraSample", "Found legacy camera device, this sample needs camera2 device");
         }
+
     }
 
     @Override
@@ -100,6 +103,7 @@ public class ViewActivity extends Activity
         if (textureView_.isAvailable()) {
             onSurfaceTextureAvailable(textureView_.getSurfaceTexture(),
                     textureView_.getWidth(), textureView_.getHeight());
+                    Log.d(TAG, "TextureView is available: x" + textureView_.getWidth() + "y" + textureView_.getHeight());
         }
     }
 
@@ -118,6 +122,7 @@ public class ViewActivity extends Activity
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         int newWidth = textureWidth;
         int newHeight = textureWidth * cameraPreviewSize_.getWidth() / cameraPreviewSize_.getHeight();
+        Log.d(TAG, "TextureView is available: nx" + textureWidth + "ny" + textureHeight);
 
         if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
             newHeight = (textureWidth * cameraPreviewSize_.getHeight()) / cameraPreviewSize_.getWidth();
@@ -194,6 +199,7 @@ public class ViewActivity extends Activity
                     this,
                     new String[]{Manifest.permission.CAMERA},
                     PERMISSION_REQUEST_CODE_CAMERA);
+                    Log.d(TAG, "Requesting Camera Permission");
             return;
         }
         createTextureView();

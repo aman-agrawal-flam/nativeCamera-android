@@ -1,0 +1,3 @@
+[submodule "flamcv"]
+	path = flamcv
+	url = https://github.com/homingos/FlamCV
